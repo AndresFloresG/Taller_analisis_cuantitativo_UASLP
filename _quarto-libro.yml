@@ -1,0 +1,25 @@
+project:
+  output-dir: _Material_libro
+
+book: 
+  output-file: "Manual"
+  chapters: 
+    - index.qmd
+    - Contenido/Contenidos.qmd
+    - Contenido/Analisis/01_diagnostico_base_de_datos.qmd
+    - Contenido/Analisis/02_limpieza_de_base.qmd
+    - Contenido/Analisis/03_etiquetado.qmd
+    - Contenido/Analisis/05_estadistica_inferencial.qmd
+    - Contenido/Analisis/06_puntajes_dimensionales.qmd
+
+format:
+  docx: 
+    number-sections: true
+    toc: false
+    reference-doc: estilos/reference.docx
+
+
+execute: 
+  echo: true
+  warning: false
+  freeze: true

@@ -1,0 +1,157 @@
+# Material complementario para taller de análisis cuantitativo de datos
+
+El material contenido en el repositorio está organizado de forma que sea posible para los asistentes replicar los procedimientos realizados utilizando las herramientas presentadas en el taller. 
+
+Se requieren los programas:
+
+* Git
+* Rstudio, Positron o VScode
+* Quarto Cli (ya incluido con RStudio o Positron)
+
+## Cómo usar el repositorio
+
+1. Clonar el repositorio utilizando cualquiera de las herramientas de elección o desde la terminal usando la línea de código mostrada en la página de [Github](https://github.com/AndresFloresG/Taller_analisis_cuantitativo)
+
+2. Verificar los archivos importantes: 
+
+  - `_quarto.yml` es el control del proyecto, básicamente el control del índice (archivos que se generan)
+  - `index.qmd` es el archivo que controla cómo se genera la portada y el índice en el documento. Inserta automáticamente el contenido de archivos fuente, uno para presentar el producto en formato de sitio web y otro para presentar el producto en formato de libro word.
+  - Archivos `.qmd` individuales: Contienen el código y la descripción de lo que se realizó. Básicamente el flujo de trabajo.
+
+3. Renderizar el proyecto. En Rstudio es posible hacerlo con `Ctrl + Shift + B` o en Vscode con `Ctrl + Shift + P`.
+
+4. Abrir el archivo generado en la carpeta _Material
+
+# Temario propuesto
+
+## Panorama general: cómo se analiza una base de datos en investigación educativa
+
+Objetivo: Comprender la lógica completa del proceso antes de entrar a técnicas analíticas.
+
+Puntos a tratar:
+
+* Qué significa analizar una base de datos.
+* Diferencia entre pregunta de investigación, objetivo, hipótesis, variable y análisis.
+* El flujo completo:
+  **diseño metodológico - SAP/plan de análisis - recolección - depuración/verificación - modelado/estructuración - análisis descriptivo e inferencial - reporte e interpretación**.
+* Errores comunes: analizar sin pregunta clara, elegir pruebas por costumbre, elegir las pruebas o modificar el análisis planeado basado en los resultados obtenidos, confundir correlación con causalidad, reportar valores de p sin interpretar magnitud de efecto.
+
+## Selección del análisis: construir un SAP (Statistical Analysis Plan) básico
+
+Objetivo: Aprender a decidir el análisis antes de abrir el software.
+
+Puntos a tratar:
+
+* Qué es un **SAP (Statistical Analysis Plan / Plan de análisis estadístico)**.
+* Qué debe contener un SAP mínimo:
+  * objetivo o hipótesis
+  * variables principales
+  * tipo de variables
+  * análisis descriptivo
+  * prueba o modelo principal
+  * criterios de decisión
+  * manejo de datos faltantes
+
+* Regla práctica para elegir análisis según:
+  * tipo de pregunta
+  * número de grupos
+  * escala de medición
+  * normalidad/supuestos
+
+* Matriz simple de decisión:
+  * describir una variable
+  * comparar dos grupos
+  * comparar tres o más grupos
+  * asociar o correlacionar dos variables
+  * predecir un resultado
+
+## Recolección y estructura de la base de datos
+
+Objetivo: Saber cómo debe diseñarse una base analizable.
+
+Puntos a tratar:
+
+* Principios de una buena base:
+  * una fila = un caso
+  * una columna = una variable
+  * un código = un significado
+    * codificación ≠ nombre de columna 
+* Diseño del libro de códigos.
+* Codificación correcta de variables:
+  * nominales
+  * ordinales
+  * numéricas
+  * fechas
+  * texto
+* Ejemplos de errores de captura que dañan el análisis.
+* Importancia de la trazabilidad y documentación.
+* Uso del control de versiones (mención breve)
+* Inicialización de proyecto de análisis
+
+## Verificación y depuración de la base de datos
+
+Objetivo: Aprender a revisar calidad antes de analizar.
+
+Puntos a tratar:
+
+* Revisión de consistencia:
+  * duplicados
+  * valores imposibles
+  * categorías mal escritas
+  * rangos fuera de escala
+  * incoherencias entre variables
+* Datos faltantes:
+  * identificarlos
+  * clasificarlos
+  * decidir qué hacer
+* Detección de valores atípicos.
+* Checklist mínimo de limpieza antes del análisis.
+
+## Modelaje o estructuración analítica de la base
+
+Objetivo: pasar de la base cruda a base lista para análisis.
+
+Puntos a tratar:
+
+* Recodificación de variables.
+* Construcción de variables derivadas o índices.
+* Agrupación de categorías.
+* Transformación de variables cuando sea necesario.
+* Selección de variables para el análisis.
+* Diferencia entre base original, base depurada y base analítica.
+
+## Desarrollo del análisis estadístico
+
+Objetivo: que identifiquen la secuencia lógica del análisis.
+
+Puntos a tratar:
+
+* Empezar siempre por análisis descriptivo.
+* Tipos de análisis que deberían reconocer:
+  * frecuencias y porcentajes
+  * medidas de tendencia central y dispersión
+  * tablas cruzadas
+  * comparación de medias/medianas
+  * asociación/correlación
+  * regresión básica
+* Supuestos mínimos que deben revisarse.
+* Cómo leer salidas estadísticas sin ser estadísticos.
+* Diferencia entre significación estadística y relevancia sustantiva.
+
+## Interpretación y reporte de resultados
+
+Objetivo: que aprendan a traducir números en hallazgos académicos.
+
+Puntos a tratar:
+
+* Cómo redactar resultados.
+* Qué reportar:
+  * tamaño de muestra
+  * descriptivos
+  * estadístico de prueba o coeficiente
+  * valor p
+  * tamaño del efecto o magnitud
+  * interpretación sustantiva
+* Cómo integrar tablas y gráficos.
+* Cómo responder la pregunta de investigación con evidencia.
+* Errores frecuentes en tesis y artículos.

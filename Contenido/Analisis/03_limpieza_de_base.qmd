@@ -1,0 +1,3 @@
+# Limpieza de base de datos 
+
+Habitualmente las bases de datos utilizadas son llenadas a mano en excel o Google Sheets, por lo que tenemos que intervenir para verificar y limpiar los datos. 

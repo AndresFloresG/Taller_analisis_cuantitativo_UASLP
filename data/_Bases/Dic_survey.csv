@@ -1,0 +1,67 @@
+Columna,Etiqueta sugerida
+Observation,Estudiante
+ID,Identificador
+Gender,Género
+Like,¿Qué haces en tu tiempo libre?
+Age,Edad en años
+Smoke,¿Fumas?
+Height,Estatura en metros
+Weight,Peso en kilogramos
+BMI,Índice de masa corporal
+School,Tipo de escuela
+SES,Estatus socioeconómico
+Enrollment,Tipo de fondos para estudiar universidad
+Score,Porcentaje de éxito para cierta prueba
+MotherHeight,Estatura de la madre
+MotherAge,Edad de la madre
+MotherCHD,Madre con enfermedad coronaria
+FatherHeight,Estatura del padre
+FatherAge,Edad del padre
+FatherCHD,Enfermedad coronaria del padre
+Status,Estatus académico
+SemAcum,Promedio de las calificaciones finales del semestre previo
+Exam1,Calificación del primer examen
+Exam2,Calificación del segundo examen
+Exam3,Calificación del tercer examen
+Exam4,Calificación del último examen
+ExamAcum,Suma de los cuatro exámenes
+Definitive,Promedio de los cuatro exámenes
+Expense,Gastos mensuales promedio
+Income,Ingreso mensual del padre
+Gas,Pago mensual de gas
+Course,Tipo de clases virtuales preferidas
+Law,Opinión sobre una ley
+Economic,Situación económica familiar durante la pandemia
+Race,Pertenencia a grupo étnico
+Region,Región de procedencia
+EMO1,Nerviosismo o inquietud sin razón durante el aislamiento preventivo
+EMO2,Irritabilidad durante el aislamiento preventivo
+EMO3,Tristeza o desánimo durante el aislamiento preventivo
+EMO4,Facilidad para asustarse durante el aislamiento preventivo
+EMO5,Dificultad para pensar claramente durante el aislamiento preventivo
+GOAL1,Preocupación por no entender suficientemente los contenidos del semestre
+GOAL2,Importancia de hacerlo mejor que otros estudiantes
+GOAL3,Preocupación por no aprender todo lo posible en el semestre
+Pre_STAT1,Me gusta la estadística (antes)
+Pre_STAT2,No me concentro al resolver problemas de estadística (antes)
+Pre_STAT3,No entiendo mucho la estadística por mi forma de pensar (antes)
+Pre_STAT4,Uso la estadística en la vida cotidiana (antes)
+Post_STAT1,Me gusta la estadística (después)
+Post_STAT2,No me concentro al resolver problemas de estadística (después)
+Post_STAT3,No entiendo mucho la estadística por mi forma de pensar (después)
+Post_STAT4,Uso la estadística en la vida cotidiana (después)
+Pre_IDARE1,Me siento tranquilo (antes)
+Pre_IDARE2,Me siento seguro (antes)
+Pre_IDARE3,Me siento nervioso (antes)
+Pre_IDARE4,Estoy estresado (antes)
+Pre_IDARE5,Estoy cómodo (antes)
+Post_IDARE1,Me siento tranquilo (después)
+Post_IDARE2,Me siento seguro (después)
+Post_IDARE3,Me siento nervioso (después)
+Post_IDARE4,Estoy estresado (después)
+Post_IDARE5,Estoy cómodo (después)
+PSICO1,Me siento bien
+PSICO2,Me canso rápidamente
+PSICO3,Tengo ganas de llorar
+PSICO4,Me gustaría ser tan feliz como otros parecen serlo
+PSICO5,Pierdo oportunidades por no poder decidir rápidamente

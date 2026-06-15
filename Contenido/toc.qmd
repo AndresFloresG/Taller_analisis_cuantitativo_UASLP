@@ -1,0 +1,20 @@
+# {.unlisted .unnumbered}
+
+**Índice**
+
+```{r, echo=FALSE, warning=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, cache = FALSE)
+local({
+    librs <- c("flextable", "magrittr", "officer", "officedown")
+    pacman::p_load(char = librs, install = TRUE, update = FALSE)
+})
+```
+
+```{r}
+officer::block_toc()
+```
+
+
+```{r, echo=FALSE}
+block_section(prop_section(type = "nextPage", page_size = page_size(width = 8.5, height = 11, orient = "portrait", unit = "in")))
+```

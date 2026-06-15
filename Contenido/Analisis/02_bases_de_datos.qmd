@@ -1,0 +1,96 @@
+# Bases de datos 
+
+Ya mencionamos cómo crear bases de datos en R mediante funciones, pero esto no es util en la práctica donde utilizamos software de gestión de datos como RedCap, OpenClinica, cuestionarios como Microsoft Forms, Googleforms o ingresamos datos directamente en una hoja de cálculo de Excel o Google Sheets. 
+
+Podemos cargar bases de datos directamente desde nuestro equipo o cargarlos directamente desde internet (principalmente en Google Sheets).
+
+## Cargado de bases de datos 
+
+### Valores separados por comas (CSV)
+
+Podemos cargar un archivo .csv utilizando la función `read.csv()` o `read.delim`.
+
+```{r}
+dict <- read.csv("data/_Bases/Dic_survey.csv")
+```
+
+### Hojas de cálculo de Excel
+
+Podemos cargar un archivo .csv utilizando la función `read_excel()` contenida en el paquete `readxl`
+
+```{r}
+data <- readxl::read_excel("data/_Bases/datos_survey.xlsx")
+```
+
+### Hojas de cálculo Google Sheets
+
+Podemos cargar una hoja de cálculo de Google Sheets utilizando el paquete `googlesheets4` y uuna serie de funciones:
+
+
+```{r}
+# Instalar paquete antes de cargarlo por primera vez
+
+# install.packages("googlesheets4")
+
+library(googlesheets4)
+```
+
+
+```{r, eval=FALSE}
+# Iniciar sesión en el correo gmail
+#gs4_auth("tucorreo@gmail.com")
+```
+
+```{r, include=FALSE}
+readRenviron(".env")
+correogmail <- Sys.getenv("correogmail")
+gs4_auth(correogmail)
+rm(correogmail)
+```
+
+
+
+```{r}
+# Link de la hoja de googlesheets
+link_datos <- "https://docs.google.com/spreadsheets/d/1imkfNkdH_QkOtJ_pz6TwGeL0ybiwi9IkwZlVF6Gb-gs/edit?usp=sharing"
+
+# Cargar hoja
+
+db <- read_sheet(
+  ss = link_datos, # Colocamos el link 
+  sheet = "Datos etiquetados"  # Nombre de la hoja que contiene los datos
+)
+```
+
+
+### Almacenar datos
+
+Previamente cargados los datos, podemos almacenarlos en un formato "amigable" para R y para nuestro uso. 
+
+Los formatos más frecuentes para uso de R son .RData y .rds; .rds almacena objetos individuales.
+
+```{r}
+saveRDS(
+  db, # Base de datos cargada desde googlesheets 
+  file = file.path("data", "_raw_RData", "base.rds") # Nota: el archivo se escribe con su extensión .rds
+) 
+```
+
+Mientras tanto, RData lo podemos usar para guardar múltiples objetos en forma de lista.
+
+```{r}
+objetos <- list(
+  base = data, # Base de datos cargada desde excel
+  diccionario = dict # Diccionario de la 
+)
+
+save(
+  objetos,
+  file = file.path("data", "_raw_RData", "Objetos.RData") # Nota: el archivo se escribe con su extensión .rds
+)
+```
+
+
+Una vez almacenado, podemos reutilizarlo en otros scripts, reiniciando la sesión al trabajar con ellos.
+
+{{< pagebreak >}}

@@ -1,0 +1,11 @@
+project: 
+  type: book
+  execute-dir: project
+  
+profile: 
+  default: sitio
+         #
+         # Opciones posibles: 
+         # sitio --> Genera un archivo html en la ruta _Material_sitio
+         # libro --> Genera un archivo docx en la ruta _Material_libro
+         

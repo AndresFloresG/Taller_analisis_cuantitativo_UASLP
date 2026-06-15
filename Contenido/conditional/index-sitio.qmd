@@ -1,0 +1,7 @@
+## Propósito {.unnumbered}
+
+
+El propósito del taller es ...
+
+
+Se discutirá el proceso del análisis y el flujo de trabajo que se debe llevar a cabo para un correcto diagnóstico y análisis de la base de datos. 

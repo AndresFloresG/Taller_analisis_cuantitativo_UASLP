@@ -1,0 +1,30 @@
+project:
+  output-dir: _Material_sitio
+
+book: 
+  chapters: 
+    - index.qmd
+    - Contenido/Contenidos.qmd
+    - Contenido/Analisis/01_diagnostico_base_de_datos.qmd
+    - Contenido/Analisis/02_limpieza_de_base.qmd
+    - Contenido/Analisis/03_etiquetado.qmd
+    - Contenido/Analisis/05_estadistica_inferencial.qmd
+    - Contenido/Analisis/06_puntajes_dimensionales.qmd
+    
+
+format:
+  html: 
+    code-fold: true
+    #code-summary: "Mostrar código"
+    #code-tools: true
+    number-sections: true
+    toc: true
+    toc-depth: 5
+    #reference-doc: estilos/reference.docx
+
+
+execute: 
+  echo: true
+  warning: false
+  output: true
+  freeze: auto
