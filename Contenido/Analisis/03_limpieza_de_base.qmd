@@ -1,3 +1,158 @@
 # Limpieza de base de datos 
 
 Habitualmente las bases de datos utilizadas son llenadas a mano en excel o Google Sheets, por lo que tenemos que intervenir para verificar y limpiar los datos. 
+
+```{r}
+load(file.path("data", "_raw_RData", "Objetos.RData"))
+db <- objetos$base
+```
+
+## Verificación con R Base
+
+La mayor parte de las comprobaciones se pueden realizar con R base a excepción de los números mal codificados.
+
+```{r}
+summary(db)
+```
+
+### ID duplicados
+
+Comprobamos los ID duplicados
+
+```{r}
+ db$ID |> 
+    table() |> 
+    sort(decreasing = T) |>
+    head(n = 10)
+```
+
+
+### Variables categóricas mal codificadas
+
+Método 1, individuales:
+
+```{r}
+db$Gender |>
+    table()
+```
+
+Método 2, agrupado
+
+Creamos un vector con las variables categóricas.
+```{r}
+vars_categ <- c(
+    "Gender", 
+    "Smoke", 
+    "School", 
+    "SES", 
+    "Enrollment", 
+    "Course", 
+    "Law", 
+    "Economic", 
+    "Region", 
+    "Status"
+)
+```
+
+Ahora aplicamos la función table al grupo.
+
+```{r}
+lapply(db[vars_categ], table)
+```
+
+### Variables Likert
+
+```{r}
+vars_lik <- c(
+    "GOAL1",
+    "GOAL2",
+    "GOAL3",
+    "Pre_IDARE1",
+    "Pre_IDARE2",
+    "Pre_IDARE3",
+    "Pre_IDARE4",
+    "Pre_IDARE5",
+    "Post_IDARE1",
+    "Post_IDARE2",
+    "Post_IDARE3",
+    "Post_IDARE4",
+    "Post_IDARE5",
+    "PSICO1",
+    "PSICO2",
+    "PSICO3",
+    "PSICO4",
+    "PSICO5"
+)
+```
+
+
+```{r}
+lapply(db[vars_lik], table)
+```
+
+### Variables continuas que aparecen como texto
+
+
+```{r}
+vars_numtext <- c(
+  "Age", 
+  "Height",
+  "Weight",
+  "BMI",
+  "Score",
+  "MotherAge",
+  "FatherAge",
+  "SemAcum",
+  "Exam1", 
+  "Exam2",
+  "Exam3",
+  "Exam4",
+  "ExamAcum", 
+  "Definitive"
+)
+```
+
+
+```{r}
+sapply(db[vars_numtext], class)
+```
+
+::: {.callout-note}
+
+La verificación para estas variables debe ser cuidadosa, ya que podría derivar en introducción de NA's.
+
+:::
+
+Cargamos librerías útiles para esta comprobación.
+
+```{r}
+library(tidyverse)
+library(stringi)
+```
+
+
+```{r}
+db %>%
+  mutate(Fila = row_number()) %>%
+  select(Fila, all_of(vars_numtext)) %>%
+  pivot_longer(
+    cols = all_of(vars_numtext),
+    names_to = "Variable",
+    values_to = "Valor"
+  ) %>%
+  mutate(
+    Valor_num = suppressWarnings(as.numeric(Valor))
+  ) %>%
+  filter(
+    is.na(Valor_num),
+    !is.na(Valor),
+    Valor != "NA"
+  ) %>%
+  select(Variable, Fila, Valor) %>%
+  print(n = nrow(.))
+```
+
+
+### Valores fuera de rango
+
+## Correcciones
