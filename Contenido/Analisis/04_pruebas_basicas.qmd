@@ -12,7 +12,8 @@ Utilidades
 
 ```{r}
 source(file.path("data", "Scripts", "minibivar.R"))
-# El paquete completo de BiVariAn se puede instalar utilizando install.packages("BiVariAn"). No se recomienda su uso en Rstudio cloud.
+# El paquete completo de BiVariAn se puede instalar utilizando install.packages("BiVariAn"). 
+# No se recomienda su uso en Rstudio cloud.
 ```
 
 ### Shapiro wilk
@@ -113,13 +114,12 @@ t.test(db$Age ~ db$Gender, var.equal = FALSE)
 t.test(db$Age ~ db$Gender)
 ```
 
-### U de Mann-Whitney
+### U de Mann-Whitney o Prueba de Wilcoxon
 
 
 ```{r}
 wilcox.test(db$Age ~ db$Gender)
 ```
-
 
 ## Diferencia entre grupos dependientes
 
@@ -142,7 +142,12 @@ Necesitamos una columna por tiempo de medición.
 ```{r}
 library(tidyr)
 sleep2 <- sleep %>% 
-    pivot_wider(id_cols = "ID", names_from = "group", values_from = "extra", names_prefix = "Medicion")
+    pivot_wider(
+        id_cols = "ID", 
+        names_from = "group", 
+        values_from = "extra", 
+        names_prefix = "Medicion"
+        )
 
 sleep2 |> tibble()
 ```
@@ -165,10 +170,9 @@ shapiro.test(sleep2$difmed)
 t.test(sleep2$Medicion1, sleep2$Medicion2, paired = TRUE)
 ```
 
-### Prueba de rangos de Wilcoxon
+### Prueba de rangos de Wilcoxon o wilcoxon pareada
 
 ```{r}
 wilcox.test(sleep2$Medicion1, sleep2$Medicion2, paired = TRUE)
 ```
-
 
