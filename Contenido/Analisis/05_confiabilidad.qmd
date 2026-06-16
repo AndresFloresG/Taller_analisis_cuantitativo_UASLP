@@ -1,0 +1,384 @@
+# Pruebas frecuentes en educación
+
+Cargamos base
+```{r}
+#db <- readRDS(file.path("data", "_raw_RData", "base_corregida.rds"))
+db <- readRDS(file.path("data", "_raw_RData", "base.rds"))
+source(file.path("data", "Scripts", "minibivar.R"))
+db <- encode_factors(db, encode = "character")
+```
+
+## Paquetes
+
+```{r}
+local({
+    librs <- c("dplyr", "tidyr", "psych", "knitr")
+})
+```
+
+
+# Preparacion de factores ordinales
+
+Antes de analizar instrumentos tipo Likert, se debe revisar que el orden de los niveles corresponda al orden teorico de la escala.
+
+```{r}
+levels(db$GOAL1)
+levels(db$Pre_IDARE1)
+levels(db$Post_IDARE1)
+levels(db$PSICO1)
+```
+
+Si los niveles no estan en el orden correcto, se reordenan. Este paso conserva las etiquetas originales; solo define el orden de menor a mayor.
+
+```{r}
+db_instr <- db |>
+  mutate(
+    across(
+      starts_with("GOAL"),
+      ~ factor(
+        .,
+        levels = c(
+          "Strongly disagree",
+          "Disagree",
+          "Undecided",
+          "Agree",
+          "Strongly agree"
+        ),
+        ordered = TRUE
+      )
+    ),
+    across(
+      starts_with("Pre_IDARE"),
+      ~ factor(
+        .,
+        levels = c("Nothing", "Little", "Quite a bit", "A lot"),
+        ordered = TRUE
+      )
+    ),
+    across(
+      starts_with("Post_IDARE"),
+      ~ factor(
+        .,
+        levels = c("Nothing", "A little", "Quite a bit", "A lot"),
+        ordered = TRUE
+      )
+    ),
+    across(
+      starts_with("PSICO"),
+      ~ factor(
+        .,
+        levels = c("Almost never", "Sometimes", "Frequently", "Almost always"),
+        ordered = TRUE
+      )
+    )
+  )
+```
+
+Verificamos nuevamente.
+
+```{r}
+levels(db_instr$GOAL1)
+levels(db_instr$Pre_IDARE1)
+levels(db_instr$Post_IDARE1)
+levels(db_instr$PSICO1)
+```
+
+# Seleccion de una escala para el ejemplo
+
+Para la demostracion principal se usa la escala `EMO`, porque sus items ya estan codificados como numericos.
+
+```{r}
+emo_items <- db_instr |>
+  select(EMO1:EMO5)
+```
+
+# Revision descriptiva de los items
+
+Antes de calcular confiabilidad, se revisa el comportamiento general de los items.
+
+```{r}
+describe(emo_items)
+```
+
+Puntos que conviene revisar:
+
+- numero de observaciones validas
+- minimo y maximo
+- media y desviacion estandar
+- valores fuera del rango esperado
+- distribucion muy asimetrica
+
+# Alfa de Cronbach
+
+El alfa de Cronbach evalua la consistencia interna de una escala. Es una de las medidas mas frecuentes en investigacion educativa.
+
+```{r}
+alpha_emo <- psych::alpha(emo_items)
+
+alpha_emo$total
+```
+
+Lectura practica:
+
+- `raw_alpha`: alfa de Cronbach con los items originales.
+- `std.alpha`: alfa con items estandarizados.
+- `average_r`: correlacion promedio entre items.
+
+# Analisis item-total
+
+El analisis item-total ayuda a revisar si cada item se comporta de forma coherente con la escala completa.
+
+```{r}
+alpha_emo$item.stats
+```
+
+Lectura practica:
+
+- `r.drop` es la correlacion item-total corregida.
+- Valores bajos de `r.drop` sugieren revisar el item.
+- Un item con baja correlacion puede estar midiendo otra cosa o estar redactado en sentido opuesto.
+
+# Alfa si se elimina el item
+
+Esta salida muestra que pasaria con el alfa si se elimina cada item.
+
+```{r}
+alpha_emo$alpha.drop
+```
+
+Lectura practica:
+
+- Si el alfa aumenta al eliminar un item, ese item debe revisarse.
+- La decision no debe tomarse solo por el alfa; tambien se considera el contenido teorico del item.
+
+# Alfa ordinal
+
+El alfa ordinal es util cuando los items son ordinales tipo Likert. En lugar de usar correlaciones de Pearson, usa correlaciones policoricas.
+
+```{r}
+cor_emo_poly <- psych::polychoric(emo_items)$rho
+
+alpha_ordinal_emo <- psych::alpha(
+  cor_emo_poly,
+  n.obs = nrow(emo_items)
+)
+
+alpha_ordinal_emo$total
+```
+
+Lectura practica:
+
+- El alfa ordinal suele ser apropiado para escalas Likert.
+- Puede diferir del alfa de Cronbach cuando los items tienen pocas categorias de respuesta.
+
+# Omega
+
+El omega es otra medida de confiabilidad. Es frecuente reportarlo como complemento o alternativa al alfa.
+
+```{r}
+omega_emo <- psych::omega(
+  cor_emo_poly,
+  nfactors = 1,
+  n.obs = nrow(emo_items),
+  plot = FALSE
+)
+
+omega_emo$omega.tot
+omega_emo$omega_h
+```
+
+Lectura practica:
+
+- `omega.tot`: confiabilidad del puntaje total.
+- `omega_h`: proporcion atribuible a un factor general.
+
+# KMO y prueba de Bartlett
+
+Antes de realizar analisis factorial exploratorio, se revisa si la matriz de correlaciones es adecuada.
+
+## KMO
+
+```{r}
+psych::KMO(cor_emo_poly)
+```
+
+Lectura practica:
+
+- KMO evalua si las correlaciones parciales son pequenas.
+- Valores mas altos sugieren mejor adecuacion para analisis factorial.
+
+## Bartlett
+
+```{r}
+psych::cortest.bartlett(
+  R = cor_emo_poly,
+  n = nrow(emo_items)
+)
+```
+
+Lectura practica:
+
+- La prueba de Bartlett evalua si la matriz de correlaciones difiere de una matriz identidad.
+- Un valor p significativo apoya continuar con analisis factorial exploratorio.
+
+# Analisis factorial exploratorio
+
+El analisis factorial exploratorio permite revisar la estructura interna de una escala.
+
+## Numero sugerido de factores
+
+```{r}
+psych::fa.parallel(
+  emo_items,
+  fa = "fa",
+  cor = "poly",
+  fm = "minres"
+)
+```
+
+## Modelo de un factor
+
+```{r}
+fa_emo <- psych::fa(
+  r = cor_emo_poly,
+  nfactors = 1,
+  n.obs = nrow(emo_items),
+  fm = "minres",
+  rotate = "none"
+)
+
+fa_emo
+```
+
+## Cargas factoriales
+
+```{r}
+fa_emo$loadings
+```
+
+Lectura practica:
+
+- Las cargas factoriales muestran cuanto se relaciona cada item con el factor.
+- Cargas bajas sugieren que el item podria no representar bien el constructo.
+
+## Comunalidades
+
+```{r}
+fa_emo$communality
+```
+
+Lectura practica:
+
+- La comunalidad indica cuanto del item queda explicado por el modelo factorial.
+- Comunalidades bajas sugieren revisar el item.
+
+# Construccion de una puntuacion de escala
+
+Una vez revisada la consistencia interna, se puede construir una puntuacion promedio.
+
+```{r}
+db_instr <- db_instr |>
+  mutate(
+    EMO_score = rowMeans(select(., EMO1:EMO5), na.rm = TRUE)
+  )
+```
+
+```{r}
+describe(db_instr$EMO_score)
+```
+
+# Ejemplo con una escala originalmente factorial
+
+Para una escala como `GOAL`, primero se revisa que los factores esten ordenados. Luego, si se quiere calcular alfa u omega, se puede crear una copia numerica solo de esos items.
+
+```{r}
+goal_items <- db_instr |>
+  select(GOAL1:GOAL3)
+
+levels(goal_items$GOAL1)
+```
+
+```{r}
+goal_items_num <- goal_items |>
+  mutate(
+    across(everything(), as.numeric)
+  )
+```
+
+```{r}
+describe(goal_items_num)
+```
+
+```{r}
+alpha_goal <- psych::alpha(goal_items_num)
+
+alpha_goal$total
+alpha_goal$item.stats
+alpha_goal$alpha.drop
+```
+
+Para calcular alfa ordinal en esta escala:
+
+```{r}
+cor_goal_poly <- psych::polychoric(goal_items_num)$rho
+
+psych::alpha(
+  cor_goal_poly,
+  n.obs = nrow(goal_items_num)
+)$total
+```
+
+# Como repetir el procedimiento con otra escala
+
+El mismo patron se puede aplicar a otra escala.
+
+Ejemplo con `Pre_STAT`:
+
+```{r}
+pre_stat_items <- db_instr |>
+  select(Pre_STAT1:Pre_STAT4)
+
+alpha_pre_stat <- psych::alpha(pre_stat_items)
+alpha_pre_stat$total
+alpha_pre_stat$item.stats
+```
+
+Ejemplo con `PSICO`:
+
+```{r}
+psico_items <- db_instr |>
+  select(PSICO1:PSICO5)
+
+psico_items_num <- psico_items |>
+  mutate(
+    across(everything(), as.numeric)
+  )
+
+alpha_psico <- psych::alpha(psico_items_num)
+alpha_psico$total
+alpha_psico$item.stats
+```
+
+# Ejemplo de redaccion de resultados
+
+La escala EMO presento una consistencia interna estimada mediante alfa de Cronbach de `r round(alpha_emo$total$raw_alpha, 3)`. La correlacion item-total corregida permitio revisar el comportamiento individual de los items. Al tratar los items como ordinales mediante correlaciones policoricas, el alfa ordinal fue de `r round(alpha_ordinal_emo$total$raw_alpha, 3)`. El omega total fue de `r round(omega_emo$omega.tot, 3)`.
+
+La matriz de correlaciones policoricas de la escala EMO fue evaluada mediante KMO y prueba de Bartlett. Estos procedimientos permiten decidir si es razonable continuar con un analisis factorial exploratorio.
+
+# Criterios practicos de interpretacion
+
+| Indicador | Pregunta que responde | Uso en el taller |
+|---|---|---|
+| Alfa de Cronbach | Los items son consistentes entre si? | Confiabilidad clasica |
+| Item-total corregida | Cada item se relaciona con la escala? | Identificar items debiles |
+| Alfa si se elimina el item | El alfa mejora si retiro un item? | Revisar posibles items problematicos |
+| Alfa ordinal | La escala ordinal tiene consistencia interna? | Util en items tipo Likert |
+| Omega | Que tan confiable es el puntaje total? | Complemento del alfa |
+| KMO | La matriz sirve para analisis factorial? | Paso previo al AFE |
+| Bartlett | Hay correlaciones suficientes entre items? | Paso previo al AFE |
+| Carga factorial | El item representa el factor? | Interpretar estructura interna |
+| Comunalidad | Cuanto explica el modelo de cada item? | Revisar calidad del item |
+
+# Mensaje clave para el taller
+
+Primero se revisa la escala, luego la consistencia interna y despues la estructura factorial. No conviene reportar alfa, omega o analisis factorial sin revisar antes la codificacion, el orden de los items y el comportamiento descriptivo de la escala.
