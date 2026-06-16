@@ -13,6 +13,7 @@ La mayor parte de las comprobaciones se pueden realizar con R base a excepción 
 
 ```{r}
 summary(db)
+str(db)
 ```
 
 Otras comprobaciones necesitan librerías adicionales. 
@@ -182,10 +183,10 @@ Recodificación agrupada:
 
 ```{r}
 db0 <- db |> #Creamos una base nueva para no sobreescribir en caso de errores
-  mutate(
-    Smoke = replace_values(
-      Smoke,
-      c("0", "NO") ~ "No",
+  mutate( # Función para transformar base de datos
+    Smoke = replace_values( # Función para reemplazar valores
+      Smoke, # Variable que se reemplazará
+      c("0", "NO") ~ "No", 
       "No responde" ~ NA,
       "yes" ~ "Yes"
     ),
