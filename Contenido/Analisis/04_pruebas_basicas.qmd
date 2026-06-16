@@ -1,0 +1,174 @@
+# Pruebas básicas
+
+## Normalidad
+
+Cargamos base
+```{r}
+#db <- readRDS(file.path("data", "_raw_RData", "base_corregida.rds"))
+db <- readRDS(file.path("data", "_raw_RData", "base.rds"))
+```
+
+Utilidades
+
+```{r}
+source(file.path("data", "Scripts", "minibivar.R"))
+# El paquete completo de BiVariAn se puede instalar utilizando install.packages("BiVariAn"). No se recomienda su uso en Rstudio cloud.
+```
+
+### Shapiro wilk
+
+
+```{r}
+shapiro.test(db$Age)
+```
+
+
+### Kolmogorov Smirnov
+
+```{r}
+ks.test(db$Age, "pnorm", mean = mean(db$Age, na.rm = T), sd(db$Age, na.rm = T))
+```
+
+### Lilliefors
+
+
+```{r}
+library(nortest)
+lillie.test(db$Age)
+```
+
+### Gráficos
+
+```{r}
+plot(density(db$Age))
+```
+
+```{r}
+library(lattice)
+densityplot(db$Age)
+```
+
+```{r}
+library(car)
+qqPlot(db$Age)
+```
+
+### Alternativa válida
+
+
+```{r}
+library(olsrr)
+ols_test_normality(db$Age)
+```
+
+
+```{r}
+auto_shapiro_raw(db)
+```
+
+
+## Homocedasticidad
+
+
+```{r}
+leveneTest(Age ~ Gender, data = db)
+```
+
+
+## Correlaciones
+
+### Pearson
+
+```{r}
+cor.test(db$Age, db$Height, method = "pearson")
+```
+
+### Spearman
+
+
+```{r}
+cor.test(db$Age, db$Height, method = "spearman")
+```
+
+### Kendall
+
+
+```{r}
+
+```
+
+## Diferencia entre grupos independientes
+
+### T de Student
+
+```{r}
+t.test(db$Age ~ db$Gender, var.equal = TRUE)
+```
+
+### T de Welch
+
+```{r}
+t.test(db$Age ~ db$Gender, var.equal = FALSE)
+# o sin el argumento var.equal
+t.test(db$Age ~ db$Gender)
+```
+
+### U de Mann-Whitney
+
+
+```{r}
+wilcox.test(db$Age ~ db$Gender)
+```
+
+
+## Diferencia entre grupos dependientes
+
+Para realizar pruebas pareadas necesitamos una columna por medición. 
+
+```{r}
+sleep <- sleep
+```
+
+Si la visualizamos, cada fila es una observación individual.
+
+
+```{r}
+sleep |> tibble()
+```
+
+Necesitamos una columna por tiempo de medición.
+
+
+```{r}
+library(tidyr)
+sleep2 <- sleep %>% 
+    pivot_wider(id_cols = "ID", names_from = "group", values_from = "extra", names_prefix = "Medicion")
+
+sleep2 |> tibble()
+```
+
+### T pareada
+
+El requisito de normalidad para T pareada se realiza basado en la diferencia de ambas mediciones.
+
+```{r}
+sleep2 <- sleep2 |>
+    mutate(
+        difmed = Medicion1 - Medicion2
+    )
+
+shapiro.test(sleep2$difmed)
+```
+
+
+```{r}
+t.test(sleep2$Medicion1, sleep2$Medicion2, paired = TRUE)
+```
+
+### Prueba de rangos de Wilcoxon
+
+```{r}
+wilcox.test(sleep2$Medicion1, sleep2$Medicion2, paired = TRUE)
+```
+
+
