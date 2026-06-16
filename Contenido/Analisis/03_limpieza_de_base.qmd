@@ -27,6 +27,13 @@ Comprobamos los ID duplicados
 ```
 
 
+```{r}
+dup_ids <- c("SB11201910004115", "SB11201910040585")
+db[1:5] |> filter(ID %in% dup_ids )
+```
+
+
+
 ### Variables categóricas mal codificadas
 
 Método 1, individuales:
@@ -156,3 +163,50 @@ db %>%
 ### Valores fuera de rango
 
 ## Correcciones
+
+### Variables categóricas mal codificadas y variables likert
+
+Recodificación individual:
+
+```{r}
+db$Gender <- db$Gender |>
+  replace_values(
+    c("F", "female") ~ "Female"
+  )
+```
+
+Recodificación agrupada:
+
+
+```{r}
+db0 <- db |> #Creamos una base nueva para no sobreescribir en caso de errores
+  mutate(
+    Smoke = replace_values(
+      Smoke,
+      c("0", "NO") ~ "No",
+      "No responde" ~ NA,
+      "yes" ~ "Yes"
+    ),
+    School = replace_values(
+      School,
+      "Privte" ~ "Private",
+      c("public", "PUBLIC") ~ "Public"
+    ),
+    SES = replace_values(
+      SES, 
+      "Highh" ~ "High",
+      "med" ~ "Medium",
+      "NA" ~ NA
+    ),
+    ####
+    # Continuar
+    #####
+    GOAL1 = case_when(
+      str_detect(GOAL1, regex("strong", ignore_case = T)) & 
+        str_detect(GOAL1, regex("agre", ignore_case = T)) ~ "Strongly Agree",
+      TRUE ~ GOAL1
+    )
+  )
+```
+
+
