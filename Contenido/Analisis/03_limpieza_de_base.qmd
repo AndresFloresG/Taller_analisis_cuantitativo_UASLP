@@ -15,6 +15,15 @@ La mayor parte de las comprobaciones se pueden realizar con R base a excepción 
 summary(db)
 ```
 
+Otras comprobaciones necesitan librerías adicionales. 
+
+Cargamos librerías útiles para esta comprobación.
+
+```{r}
+library(tidyverse)
+library(stringi)
+```
+
 ### ID duplicados
 
 Comprobamos los ID duplicados
@@ -130,13 +139,6 @@ La verificación para estas variables debe ser cuidadosa, ya que podría derivar
 
 :::
 
-Cargamos librerías útiles para esta comprobación.
-
-```{r}
-library(tidyverse)
-library(stringi)
-```
-
 
 ```{r}
 db %>%
@@ -203,10 +205,67 @@ db0 <- db |> #Creamos una base nueva para no sobreescribir en caso de errores
     #####
     GOAL1 = case_when(
       str_detect(GOAL1, regex("strong", ignore_case = T)) & 
-        str_detect(GOAL1, regex("agre", ignore_case = T)) ~ "Strongly Agree",
+        str_detect(GOAL1, regex("agre", ignore_case = T)) ~ "Strongly agree",
       TRUE ~ GOAL1
+    ),
+    ### 
+    # Otra manera
+    ###
+    GOAL3 = case_when(
+      str_detect(GOAL3, "NA") | is.na(GOAL3) ~ NA_character_,
+      TRUE ~ str_to_sentence(GOAL3)
     )
   )
 ```
 
 
+### Variables continuas que aparecen como texto
+
+Para estas variables se aplica la corrección de acuerdo con el error encontrado. Lo más sencillo es utilizar un flujo secuencial en el que se corrige paso por paso los errores, ya que de no realizarlo correctamente podemos perder información. 
+
+
+```{r}
+db1 <- db0 %>% # Creamos otro objeto (base) para evitar sobreescribir e introducir errores. Usamos operador pipe versátil
+  mutate(
+    across(all_of(vars_numtext), ~str_replace_all(., ",", "."))
+  )
+```
+
+Comprobamos 
+
+
+```{r}
+db1 %>%
+  mutate(Fila = row_number()) %>%
+  select(Fila, all_of(vars_numtext)) %>%
+  pivot_longer(
+    cols = all_of(vars_numtext),
+    names_to = "Variable",
+    values_to = "Valor"
+  ) %>%
+  mutate(
+    Valor_num = suppressWarnings(as.numeric(Valor))
+  ) %>%
+  filter(
+    is.na(Valor_num),
+    !is.na(Valor),
+    Valor != "NA"
+  ) %>%
+  select(Variable, Fila, Valor) %>%
+  print(n = nrow(.))
+```
+
+
+### Etiquetado
+
+
+
+
+## Almacenar datos
+
+Una vez corregidos los datos, podemos almacenarlos.
+
+
+```{r}
+saveRDS(db1, file = file.path("data", "_raw_RData", "base_corregida.rds"))
+```
