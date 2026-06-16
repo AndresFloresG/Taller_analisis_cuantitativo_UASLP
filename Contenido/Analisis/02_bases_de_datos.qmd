@@ -56,9 +56,14 @@ link_datos <- "https://docs.google.com/spreadsheets/d/1imkfNkdH_QkOtJ_pz6TwGeL0y
 
 # Cargar hoja
 
-db <- read_sheet(
+dbet <- read_sheet(
   ss = link_datos, # Colocamos el link 
   sheet = "Datos etiquetados"  # Nombre de la hoja que contiene los datos
+)
+
+db <- read_sheet(
+  ss = link_datos,
+  sheet = "Datos"  # Hoja con datos no etiquetados
 )
 ```
 
@@ -81,6 +86,7 @@ Mientras tanto, RData lo podemos usar para guardar múltiples objetos en forma d
 ```{r}
 objetos <- list(
   base = data, # Base de datos cargada desde excel
+  base_etiquetada = dbet,
   diccionario = dict # Diccionario de la 
 )
 
