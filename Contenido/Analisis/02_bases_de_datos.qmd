@@ -1,5 +1,7 @@
 # Bases de datos 
 
+Base de datos utilizada: lsm::survey
+
 Ya mencionamos cómo crear bases de datos en R mediante funciones, pero esto no es util en la práctica donde utilizamos software de gestión de datos como RedCap, OpenClinica, cuestionarios como Microsoft Forms, Googleforms o ingresamos datos directamente en una hoja de cálculo de Excel o Google Sheets. 
 
 Podemos cargar bases de datos directamente desde nuestro equipo o cargarlos directamente desde internet (principalmente en Google Sheets).
