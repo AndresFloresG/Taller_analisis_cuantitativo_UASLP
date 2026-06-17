@@ -10,10 +10,31 @@ Podemos cargar bases de datos directamente desde nuestro equipo o cargarlos dire
 
 ### Valores separados por comas (CSV)
 
+Un archivo ".csv" o "Valores Separados por comas(Comma-Separated Values)" es un archivo similar a un excel pero "comprimido".
+
+Puede abrirse y editarse en cualquier editor de texto plano (Bloc de notas) y es universalmente compatible con hojas de cálculo como Excel o Google Sheets.
+
+Un ejemplo simple sería:
+
+```csv
+Nombre,Edad,Ciudad
+Ana,28,Madrid
+Carlos,34,México CDMX
+Lucía,22,Buenos Aires
+```
+
+Usualmente estos archivos los "generamos" en Excel/Google Sheets dando click en "guardar como" csv. 
+
+Actualmente son menos frecuentes para el modelo de análisis "Tidy data" ya que después de su introducción en el 2019 se facilitó la lectura a partir de Excel, Google Sheets y SharePoint.
+
 Podemos cargar un archivo .csv utilizando la función `read.csv()` o `read.delim`.
 
 ```{r}
 dict <- read.csv("data/_Bases/Dic_survey.csv")
+dict_delim <- read.delim(
+  "data/_Bases/Dic_survey.csv", # Archivo
+  sep = ","                     # Delimitador, "Separado por comas" significa que el delimitador es una coma
+  )
 ```
 
 ### Hojas de cálculo de Excel
