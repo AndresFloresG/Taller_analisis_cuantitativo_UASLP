@@ -30,15 +30,17 @@ library(stringi)
 Comprobamos los ID duplicados
 
 ```{r}
- db$ID |> 
+duplicados_check <- db$ID |> 
     table() |> 
     sort(decreasing = T) |>
     head(n = 10)
+
+duplicados_check
 ```
 
 
 ```{r}
-dup_ids <- c("SB11201910004115", "SB11201910040585")
+dup_ids <- names(duplicados_check[1:4])
 db[1:5] |> filter(ID %in% dup_ids )
 ```
 
