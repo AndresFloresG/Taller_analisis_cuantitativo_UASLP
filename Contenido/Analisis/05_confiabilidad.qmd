@@ -222,6 +222,21 @@ Lectura practica:
 - La prueba de Bartlett evalua si la matriz de correlaciones difiere de una matriz identidad.
 - Un valor p significativo apoya continuar con analisis factorial exploratorio.
 
+
+# Ejercicio
+
+Replicar con otra escala 
+
+
+```{r}
+
+```
+
+
+
+
+
+
 # Analisis factorial exploratorio
 
 El analisis factorial exploratorio permite revisar la estructura interna de una escala.
@@ -365,21 +380,3 @@ alpha_psico$item.stats
 La escala EMO presento una consistencia interna estimada mediante alfa de Cronbach de `r round(alpha_emo$total$raw_alpha, 3)`. La correlacion item-total corregida permitio revisar el comportamiento individual de los items. Al tratar los items como ordinales mediante correlaciones policoricas, el alfa ordinal fue de `r round(alpha_ordinal_emo$total$raw_alpha, 3)`. El omega total fue de `r round(omega_emo$omega.tot, 3)`.
 
 La matriz de correlaciones policoricas de la escala EMO fue evaluada mediante KMO y prueba de Bartlett. Estos procedimientos permiten decidir si es razonable continuar con un analisis factorial exploratorio.
-
-# Criterios practicos de interpretacion
-
-| Indicador | Pregunta que responde | Uso en el taller |
-|---|---|---|
-| Alfa de Cronbach | Los items son consistentes entre si? | Confiabilidad clasica |
-| Item-total corregida | Cada item se relaciona con la escala? | Identificar items debiles |
-| Alfa si se elimina el item | El alfa mejora si retiro un item? | Revisar posibles items problematicos |
-| Alfa ordinal | La escala ordinal tiene consistencia interna? | Util en items tipo Likert |
-| Omega | Que tan confiable es el puntaje total? | Complemento del alfa |
-| KMO | La matriz sirve para analisis factorial? | Paso previo al AFE |
-| Bartlett | Hay correlaciones suficientes entre items? | Paso previo al AFE |
-| Carga factorial | El item representa el factor? | Interpretar estructura interna |
-| Comunalidad | Cuanto explica el modelo de cada item? | Revisar calidad del item |
-
-# Mensaje clave para el taller
-
-Primero se revisa la escala, luego la consistencia interna y despues la estructura factorial. No conviene reportar alfa, omega o analisis factorial sin revisar antes la codificacion, el orden de los items y el comportamiento descriptivo de la escala.

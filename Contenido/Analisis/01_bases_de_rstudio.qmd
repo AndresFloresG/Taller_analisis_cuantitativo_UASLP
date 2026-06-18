@@ -2,8 +2,7 @@
 
 ## Funciones
 
-:::{.callout-warning}
-
+::: callout-warning
 Nota importante: R es sensible a mayúsculas y minúsculas, no será lo mismo para R "T.TEST" que no existe a "t.test".
 :::
 
@@ -11,7 +10,7 @@ El flujo de análisis de datos en R se basa en gran medida sobre las funciones, 
 
 Siempre que exista una frase específica inmediatamente antes de un paréntesis estaremos utilizando funciones. Por ejemplo:
 
-```r       
+``` r
 # Función de eliminar objetos
 rm()
 
@@ -21,7 +20,7 @@ mean()
 
 O funciones más específicas
 
-```r      
+``` r
 # Función para T de student
 t.test()
 
@@ -48,13 +47,12 @@ Cada función tiene los llamados "argumentos" que es información que la funció
 
 Por ejemplo, retomando el punto anterior. La función `install.packages()` sirve para instalar paquetes adicionales y recibe ciertos argumentos que de manera sencilla, es el nombre del paquete como texto (entre comillas). Por ejemplo:
 
-```r
+``` r
 install.packages("ggplot2")
 ```
 
-:::{.callout-note}
-Tambien podemos instalar paquetes de forma gráfica con "botones" y barra de búsqueda en la pestaña "Tools -> Install Packages..."
-
+::: callout-note
+Tambien podemos instalar paquetes de forma gráfica con "botones" y barra de búsqueda en la pestaña "Tools -\> Install Packages..."
 :::
 
 Otro ejemplo del uso de argumentos es la función `ggplot()` que sirve para crear gráficos. La función `library()` nos sirve para cargar alguno de los paquetes que tenemos instalados, como ggplot2.
@@ -69,11 +67,11 @@ Por otra parte, la función "args" nos permite saber los argumentos de una funci
 args(ggplot)
 ```
 
-La salida de la consola nos menciona que es una función con los siguientes argumentos: 
+La salida de la consola nos menciona que es una función con los siguientes argumentos:
 
-- `data`: La base de datos que se usará. 
-- `mapping`: El "mapeo" que habitualmente se coloca en otra función anidada (Una función dentro de otra función) 
-- `...`: Un argumento muy importante en la programación estadística pero poco usado para los fines prácticos, su nombre es "dot-dot-dot". 
+- `data`: La base de datos que se usará.
+- `mapping`: El "mapeo" que habitualmente se coloca en otra función anidada (Una función dentro de otra función)
+- `...`: Un argumento muy importante en la programación estadística pero poco usado para los fines prácticos, su nombre es "dot-dot-dot".
 - `environment`: El ambiente de trabajo en el que se encuentran los datos que manipularemos, habitualmente no es necesario especificar esto.
 
 Se puede notar que en la salida de la consola algunos argumentos ya tienen datos asignados, por ejemplo `data = NULL`, estos son argumentos llamados por **"default"** o de manera predeterminada por las personas que programaron la función, por eso no es frecuente que escribamos algunos argumentos como `environment`, también podemos ver que los argumentos están separados por una coma ",", esto es importante para especificarle a la función cuándo hemos terminado de "hablar con la función" sobre un argumento.
@@ -107,7 +105,7 @@ set.seed(1234);rnorm(50, # El argumento llamado "n" nos solicita cuántas observ
 
 No siempre nos sabremos la posición o el orden de los argumentos, por lo que si es de buena práctica especificarlos.
 
-Es importante mencionar que **los argumentos cambian de acuerdo con las funciones**. 
+Es importante mencionar que **los argumentos cambian de acuerdo con las funciones**.
 
 ## Operadores
 
@@ -127,7 +125,7 @@ exists("letra_a")
 letra_a
 ```
 
-Ahora asignaremos un valor de caracter al objeto creado llamado `letra_a`. El operador "<-" crea el objeto de la izquierda dándole el valor de la derecha
+Ahora asignaremos un valor de caracter al objeto creado llamado `letra_a`. El operador "\<-" crea el objeto de la izquierda dándole el valor de la derecha
 
 ```{r}
 letra_a <- "a"
@@ -138,7 +136,6 @@ letra_a
 ```{r}
 rm(letra_a) # Eliminamos el objeto
 ```
-
 
 ### Vectores
 
@@ -206,9 +203,9 @@ La diferencia está en la función que se usa para crear el objeto. Se usa "c" p
 
 ### Subconjunto
 
-- "\$" Utiliza el signo de "pesos" para acceder al objeto original contenido en un conjunto de objetos. 
+- "\$" Utiliza el signo de "pesos" para acceder al objeto original contenido en un conjunto de objetos.
 
-Es decir, tenemos un objeto con múltiples objetos en el. El operador subconjunto nos permite "sacarlos", verlos y utilizarlos individualmente. 
+Es decir, tenemos un objeto con múltiples objetos en el. El operador subconjunto nos permite "sacarlos", verlos y utilizarlos individualmente.
 
 ```{r}
 Long$Response # Aquí accedemos al subconjunto "Response" dentro del objeto "Long"
@@ -216,17 +213,17 @@ Long$Response # Aquí accedemos al subconjunto "Response" dentro del objeto "Lon
 
 ### Pipe
 
-- `|>` Nativo de R, introducido en R 4.1.0 (Mayo 2021). 
-    - No requiere dependencias.
-    - Menos flexible, sensible en algunos casos.
-    - No es útil en análisis que requieren R<4.1.0
-    - Placeholder: `_`
+- `|>` Nativo de R, introducido en R 4.1.0 (Mayo 2021).
+  - No requiere dependencias.
+  - Menos flexible, sensible en algunos casos.
+  - No es útil en análisis que requieren R\<4.1.0
+  - Placeholder: `_`
 - `%>%` Introducido en el paquete `magrittr` (2014).
-    - Más flexible
-    - Placeholder `.`
-    - Requiere dependencias (`magrittr`)
+  - Más flexible
+  - Placeholder `.`
+  - Requiere dependencias (`magrittr`)
 
-El operador pipe es uno de los más útiles, ya que nos permite evaluar una función o serie de funciones de izquierda a derecha sin tener que almacenar o crear objetos en cada paso. 
+El operador pipe es uno de los más útiles, ya que nos permite evaluar una función o serie de funciones de izquierda a derecha sin tener que almacenar o crear objetos en cada paso.
 
 Por ejemplo, si queremos hacer una tabla de una base de datos y presentarla en R, usualmente tendríamos que hacer un flujo similar al siguiente:
 
@@ -239,7 +236,6 @@ data("mtcars")
 
 head(mtcars)
 ```
-
 
 ```{r}
 data2 <- subset(mtcars, cyl == 4)
@@ -261,7 +257,6 @@ data2 |>
   set_table_properties(layout = "autofit")
 ```
 
-
 ```{r}
 library(magrittr)
 data2 %>%
@@ -271,20 +266,19 @@ data2 %>%
   set_table_properties(layout = "autofit")
 ```
 
-## Notas útiles 
+## Notas útiles
 
+En a lo largo de los archivos encontraremos una función bastante frecuente llamada `file.path()` la cual sirve para declarar la "ruta" de un archivo.
 
-En a lo largo de los archivos encontraremos una función bastante frecuente llamada `file.path()` la cual sirve para declarar la "ruta" de un archivo. 
+### Directorios de trabajo
 
-### Directorios de trabajo 
+Un punto final a considerar son los directorios de trabajo. Para fines prácticos introducimos dos términos para hacer alusión a los directorios: Absolutos y relativos.
 
-Un punto final a considerar son los directorios de trabajo. Para fines prácticos introducimos dos términos para hacer alusión a los directorios: Absolutos y relativos. 
-
-Un directorio absoluto se refiere al "directorio completo" dentro del sistema operativo. En Windows esto lo vemos al abrir el explorador de archivos y dar click en la barra de direcciones. Podemos ver una ruta como: 
+Un directorio absoluto se refiere al "directorio completo" dentro del sistema operativo. En Windows esto lo vemos al abrir el explorador de archivos y dar click en la barra de direcciones. Podemos ver una ruta como:
 
 `C:\Usuarios\Escritorio\Carpeta de trabajo\Protocolo\`
 
-La ruta absoluta nos dice la dirección real y exacta de una carpeta o un archivo dentro de nuestro disco duro. 
+La ruta absoluta nos dice la dirección real y exacta de una carpeta o un archivo dentro de nuestro disco duro.
 
 En Linux o Mac esto aparece de otra forma similar a:
 
@@ -292,11 +286,11 @@ En Linux o Mac esto aparece de otra forma similar a:
 
 Aquí no aparece la letra de unidad "C" y las diagonales cambian de sentido.
 
-Usar rutas absolutas podría parecer lo ideal, son más específicas y detalladas, y no parece haber margen de error. Sin embargo, usar rutas relativas en producción, investigación y redacción puede llegar a ser conflictivo, poco intuitivo y doloroso. 
+Usar rutas absolutas podría parecer lo ideal, son más específicas y detalladas, y no parece haber margen de error. Sin embargo, usar rutas relativas en producción, investigación y redacción puede llegar a ser conflictivo, poco intuitivo y doloroso.
 
-Por ejemplo, cómo podemos especificar a R qué vamos a usar la base de datos "Base tesis". 
+Por ejemplo, cómo podemos especificar a R qué vamos a usar la base de datos "Base tesis".
 
-```
+```         
 Usuarios/
 └── Yo/
     └── Escritorio/
@@ -312,36 +306,36 @@ Quedaría como:
 
 `/Usuarios/Yo/Escritorio/Maestria/Protocolo/Analisis/Datos/Bases/Base tesis.xlsx`
 
-Lo que quedaría bastante tedioso reproducir. Además, si queremos compartir el script de análisis automáticamente dejaría de ser reproducible a menos que la persona que desea replicar coloque el archivo exactamente en la ruta señalada. Aun así, nos encontramos con otro riesgo: el sistema operativo. Si compartimos entre Windows y Mac dejaría de ser fácil de compartir. Incluso si no queremos compartirlo con alguien más, en cambio, queremos pasar el análisis de nuestra computadora a una USB, o a RStudio cloud (Posit cloud), este trabaja con directorios basados en Linux, además, las rutas absolutas no existen, ya que se trabaja en proyectos y se utilizan rutas relativas. 
+Lo que quedaría bastante tedioso reproducir. Además, si queremos compartir el script de análisis automáticamente dejaría de ser reproducible a menos que la persona que desea replicar coloque el archivo exactamente en la ruta señalada. Aun así, nos encontramos con otro riesgo: el sistema operativo. Si compartimos entre Windows y Mac dejaría de ser fácil de compartir. Incluso si no queremos compartirlo con alguien más, en cambio, queremos pasar el análisis de nuestra computadora a una USB, o a RStudio cloud (Posit cloud), este trabaja con directorios basados en Linux, además, las rutas absolutas no existen, ya que se trabaja en proyectos y se utilizan rutas relativas.
 
-En este contexto se vuelven relevantes las rutas relativas, las cuales no "existen" de forma pura, sino que se infieren a partir de dónde se hace la petición (de ahí el nombre relativo). 
+En este contexto se vuelven relevantes las rutas relativas, las cuales no "existen" de forma pura, sino que se infieren a partir de dónde se hace la petición (de ahí el nombre relativo).
 
 Para esto será de utilidad la creación de proyectos que no es más que una carpeta. Al crear un proyecto el directorio de trabajo se establece en esa carpeta, por lo que las rutas relativas se infieren a partir de la misma. Por ejemplo, si creamos un proyecto dentro de la carpeta "Protocolo", el directorio de trabajo se establecerá en la carpeta "Protocolo", entonces retomando el ejemplo anterior, la ruta de la base de datos "Base tesis" quedaría como:
 
-`Analisis/Datos/Bases/Base tesis.xlsx`  
+`Analisis/Datos/Bases/Base tesis.xlsx`
 
 o
 
-`./Analisis/Datos/Bases/Base tesis.xlsx`  
+`./Analisis/Datos/Bases/Base tesis.xlsx`
 
-Siendo `./` el punto de partida del directorio. 
+Siendo `./` el punto de partida del directorio.
 
 Sin el "rastreo" a partir de la unidad (C:/, D:/, etc.), lo que es mucho más fácil de escribir, compartir y reproducir. En otras palabras eliminamos `/Usuarios/Yo/Escritorio/Maestria/Protocolo/` y dejamos solo la parte relevante a partir del proyecto. Si nosotros compartimos el proyecto en una carpeta comprimida, o lo subimos a Posit Cloud/Git/GitHub, la persona que lo reciba solo tendrá que descomprimirlo o clonarlo y el proyecto se abrirá con las rutas relativas funcionando sin necesidad de modificar nada.
 
-Para facilitar la reproducibilidad y evitar incluso el "dolor de cabeza" de cambiar diagonales "/" por diagonales invertidas "\" en los scripts de R, podemos usar una función llamada `file.path()` que completa la ruta de acuerdo como le indiquemos. 
+Para facilitar la reproducibilidad y evitar incluso el "dolor de cabeza" de cambiar diagonales "/" por diagonales invertidas "" en los scripts de R, podemos usar una función llamada `file.path()` que completa la ruta de acuerdo como le indiquemos.
 
 ```{r}
 file.path("Directorio", "Subdirectorio", "Archivo.xlsx")
 ```
 
-Por ejemplo, para la ruta `./Analisis/Datos/Bases/Base tesis.xlsx`  obviamos el ".", quedaría similar a...
+Por ejemplo, para la ruta `./Analisis/Datos/Bases/Base tesis.xlsx` obviamos el ".", quedaría similar a...
 
 ```{r}
 file.path("Analisis", "Datos", "Bases", "Base tesis.xlsx")
 ```
 
-::: {.callout-tip}
-Un punto de buena práctica es evitar los espacios al crear los directorios y guardar archivos, sugiriendo métodos como snake case, camel case o kebab case. 
+::: callout-tip
+Un punto de buena práctica es evitar los espacios al crear los directorios y guardar archivos, sugiriendo métodos como snake case, camel case o kebab case.
 
 snake case: `Base_tesis.xlsx`
 
@@ -349,12 +343,11 @@ camel case: `BaseTesis.xlsx`
 
 kebab case: `Base-Tesis.xlsx`
 
-Este repositorio utilizará principalmente snake case por preferencia personal. 
+Este repositorio utilizará principalmente snake case por preferencia personal.
 
 ```{r}
 file.path("Analisis", "Datos", "Bases", "Base_tesis.xlsx")
 ```
-
 :::
 
 {{< pagebreak >}}
